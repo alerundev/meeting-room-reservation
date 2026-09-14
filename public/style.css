@@ -1,0 +1,42 @@
+/* Custom scrollbar and timetable utilities */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.timetable-grid {
+  display: grid;
+  grid-template-columns: 140px repeat(12, minmax(64px, 1fr));
+  gap: 1px;
+  background-color: #e2e8f0;
+}
+
+.time-slot-cell {
+  background-color: #ffffff;
+  transition: background-color 0.15s ease;
+  min-height: 52px;
+  position: relative;
+}
+
+.time-slot-cell:hover {
+  background-color: #f8fafc;
+}
+
+.reservation-block {
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.reservation-block:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}

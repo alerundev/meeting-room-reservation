@@ -1,0 +1,24 @@
+{
+  "name": "meeting-room-reservation",
+  "version": "1.0.0",
+  "description": "회의실 예약 시스템 웹 애플리케이션 (Node.js Express + PostgreSQL)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "meeting-room",
+    "reservation",
+    "express",
+    "postgresql"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  }
+}
