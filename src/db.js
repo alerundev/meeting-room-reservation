@@ -1,12 +1,25 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/meeting_rooms';
+// Construct database configuration using specific env vars or fallback URL
+let poolConfig;
+if (process.env.DATABASE_URL) {
+  poolConfig = {
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
+  };
+} else {
+  poolConfig = {
+    host: process.env.DB_HOST || 'postgres-db',
+    port: parseInt(process.env.DB_PORT || '5432', 10),
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'meeting_rooms',
+    ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
+  };
+}
 
-const pool = new Pool({
-  connectionString,
-  ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
-});
+const pool = new Pool(poolConfig);
 
 pool.on('error', (err) => {
   console.error('Unexpected error on idle PostgreSQL client:', err);
@@ -44,16 +57,14 @@ async function initDb() {
       );
     `);
 
-    // Check if rooms table is empty, and seed default rooms
+    // Check if rooms table is empty, and seed exactly 3 default rooms
     const { rows } = await client.query('SELECT COUNT(*) AS count FROM rooms');
     if (parseInt(rows[0].count, 10) === 0) {
-      console.log('Seeding initial meeting rooms...');
+      console.log('Seeding initial 3 meeting rooms...');
       const seedRooms = [
         ['회의실 A (창의룸)', 6, '본관 3층 동편', '소규모 브레인스토밍 및 화상회의 최적화 (모니터, 화상카메라 구비)'],
         ['회의실 B (협업룸)', 8, '본관 3층 서편', '부서간 협업 및 주간 업무 미팅용 (대형 화이트보드 구비)'],
-        ['회의실 C (비전룸)', 4, '본관 4층', '집중 인터뷰 및 1:1 면담용 방음 룸'],
-        ['대회의실 (그랜드홀)', 20, '본관 5층 중앙', '전사 타운홀 미팅 및 대규모 세미나용 (빔프로젝터, 듀얼마이크 구비)'],
-        ['소회의실 (아이디어룸)', 4, '본관 2층', '신속한 데일리 스크럼 및 미니 회의 공간']
+        ['회의실 C (비전룸)', 4, '본관 4층', '집중 인터뷰 및 1:1 면담용 방음 룸']
       ];
 
       for (const room of seedRooms) {
@@ -62,7 +73,7 @@ async function initDb() {
           room
         );
       }
-      console.log('Initial meeting rooms seeded successfully.');
+      console.log('Initial 3 meeting rooms seeded successfully.');
     }
 
     await client.query('COMMIT');
