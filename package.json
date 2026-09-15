@@ -1,23 +1,18 @@
 {
-  "name": "meeting-room-reservation",
+  "name": "meeting-room-reservation-mvp",
   "version": "1.0.0",
-  "description": "회의실 예약 시스템 웹 애플리케이션 (Node.js Express + PostgreSQL)",
+  "private": true,
+  "description": "한국어 회의실 예약시스템 MVP",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "test": "node --test"
   },
-  "keywords": [
-    "meeting-room",
-    "reservation",
-    "express",
-    "postgresql"
-  ],
-  "author": "",
-  "license": "ISC",
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "pg": "^8.13.1"
   }
